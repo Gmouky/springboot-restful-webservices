@@ -1,20 +1,21 @@
 package com.tutorial.springbootrestfulwebservices.controller;
 
 import com.tutorial.springbootrestfulwebservices.dto.UserDto;
-import com.tutorial.springbootrestfulwebservices.entity.User;
-import com.tutorial.springbootrestfulwebservices.exception.ErrorDetails;
-import com.tutorial.springbootrestfulwebservices.exception.ResourceNotFoundException;
 import com.tutorial.springbootrestfulwebservices.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.service.annotation.GetExchange;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
+@Tag(
+        name = "CRUD Rest api for user resource",
+        description = "Create user, update user, get users, delete user, get all user"
+)
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -25,6 +26,14 @@ public class UserController {
         this.userService = userService;
     }
 
+    @Operation(
+            summary = "Create user rest api",
+            description = "create user rest api is used to save user in a database"
+    )
+    @ApiResponse(
+            responseCode = "201",
+            description = "Http Status 201 CREATED"
+    )
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         UserDto savedUser = userService.createUser(userDto);
